@@ -6,10 +6,10 @@ import keyring
 
 #Time of day to run. Which hours to start submitting texts and which hours to finish. 
 MinHourOfDay=8
-MaxHourOfDay=23
+MaxHourOfDay=22
 
 #How frequently do you want it to send texts in minutes. It will be a random number of minutes betweemn these two settings
-MinIncriment=10
+MinIncriment=15
 MaxIncriment=90
 
 #Files Used
@@ -32,29 +32,30 @@ def Submitter():
     while True:
         timer= random.randint((MinIncriment*60),(MaxIncriment*60))
         now=datetime.datetime.now().time()
-        
+              
         if now > datetime.time(MinHourOfDay) and now < datetime.time(MaxHourOfDay):
             for PhoneNumber in PhoneNumbers:
-                ListReader(PhoneNumber,timer)
-        time.sleep(timer)
+                ListReader(PhoneNumber)
+            logger("next message going out in " + str(timer/60) + "minutes\n")
+            time.sleep(timer)
 
-def ListReader(PhoneNumber,timer):
+def ListReader(PhoneNumber):
     Myfile=open(ListofSayings, "r")
     sayings=Myfile.readlines()
     count=int(len(sayings)-1)
     randomizer=random.randint(0,count)
     randomstring = sayings[randomizer]
-    Texter(PhoneNumber, randomstring, timer)
+    Texter(PhoneNumber, randomstring)
 
-def Texter(PhoneNumber, randomstring, timer):
+def Texter(PhoneNumber, randomstring):
     voice.send_sms(PhoneNumber, randomstring)
-    nextrun=str(timer/60)
+    logger("Just sent " + PhoneNumber + " this: " + randomstring)
+
+def logger (Message):
     now=datetime.datetime.now().time()
     logtime = str(now)
     with open(LogFile, "a") as Log:
-        Log.write(logtime + "  Just sent this: "+ randomstring)
-        Log.write(logtime + "  next run is in " + nextrun + " minutes \n")
-
-
+        Log.write(logtime +"  "+ Message)
+ 
 #Run Main Loop
 Submitter()
