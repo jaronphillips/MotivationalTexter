@@ -13,7 +13,7 @@ MinIncriment=15
 MaxIncriment=90
 
 #Files Used
-ListOfNumbers="PhoneNumbers2.txt"
+ListOfNumbers="PhoneNumbers.txt"
 ListofSayings="Sayings.txt"
 LogFile="MotivationLog.txt"
 
