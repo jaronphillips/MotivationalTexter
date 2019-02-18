@@ -26,7 +26,7 @@ def randomtexter():
         Myfile=open(ListofSayings, "r")
         sayings=Myfile.readlines()
         count=int(len(sayings)-1)
-        randomizer=random.randint(1,count)
+        randomizer=random.randint(0,count)
         randomstring = sayings[randomizer]
 
         nextrun=str(timer/60)
