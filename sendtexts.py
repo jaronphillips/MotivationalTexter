@@ -13,19 +13,23 @@ MinIncriment=15
 MaxIncriment=90
 
 #Files Used
-ListOfNumbers="PhoneNumbers.txt"
+ListOfNumbers="PhoneNumbers2.txt"
 ListofSayings="Sayings.txt"
 LogFile="MotivationLog.txt"
 
+#open Files
 PhoneList=open(ListOfNumbers, "r")
 PhoneNumbers=PhoneList.read().splitlines()
+
+Myfile=open(ListofSayings, "r")
+sayings=Myfile.readlines()
+count=int(len(sayings)-1)
 
 #Google voice Login
 voice = Voice()
 usr=keyring.get_password('2','2')
 pwd=keyring.get_password('1','1')
 voice.login(usr,pwd)
-
 
 #Functions
 def Submitter():
@@ -35,14 +39,11 @@ def Submitter():
               
         if now > datetime.time(MinHourOfDay) and now < datetime.time(MaxHourOfDay):
             for PhoneNumber in PhoneNumbers:
-                ListReader(PhoneNumber)
+                ListRandomizer(PhoneNumber)
             logger("next message going out in " + str(timer/60) + "minutes\n")
             time.sleep(timer)
 
-def ListReader(PhoneNumber):
-    Myfile=open(ListofSayings, "r")
-    sayings=Myfile.readlines()
-    count=int(len(sayings)-1)
+def ListRandomizer(PhoneNumber):
     randomizer=random.randint(0,count)
     randomstring = sayings[randomizer]
     Texter(PhoneNumber, randomstring)
